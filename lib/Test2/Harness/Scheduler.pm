@@ -307,6 +307,10 @@ sub abort {
         CORE::kill('TERM', $pid);
         $job->{killed} = 1;
     }
+
+    # When aborting all runs (e.g. BAIL_OUT), terminate the entire scheduler.
+    # Skip for partial aborts where only specific runs are targeted.
+    $self->terminate(1) unless @runs;
 }
 
 sub kill {
